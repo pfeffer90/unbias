@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+from IPython.display import display
+import ipywidgets as widgets
 
 
 class GameConstants:
@@ -34,3 +36,28 @@ class Game:
         """
         self.number_of_trials = 0
         self.trials = pd.DataFrame(columns=GameConstants.agent_data)
+
+def setup_game(g, max_trials):
+
+    def on_button_clicked(b):
+        choice = int(b.description)
+        reward = 1
+        g.provide_reward(choice)
+        g.add_trial(choice,reward)
+        if g.number_of_trials == max_trials:
+            print("You did it :)")
+            button0.close()
+            button1.close()
+
+
+    button0 = widgets.Button(
+        description='0')
+
+    button1 = widgets.Button(
+            description='1')
+
+    widget_container = widgets.Box([button0,button1])
+    display(widget_container)
+
+    button0.on_click(on_button_clicked)
+    button1.on_click(on_button_clicked)
