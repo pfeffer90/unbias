@@ -11,7 +11,8 @@ from unbias.outguesser import simple_gradient_descent, Outguesser, maximum_a_pos
 from unbias.training_data import sigmoid
 
 dummy_agent = 0. * np.ones(2)
-dummy_agent[1] = -5
+dummy_agent[0] = 0
+dummy_agent[1] = -0.5
 
 p_init = 0.5
 
@@ -20,7 +21,7 @@ w_0 = np.zeros(2)  # initial prior predicts unbiased agent
 outguesser = Outguesser(simple_gradient_descent, maximum_a_posteriori, w_0)
 
 # learn and generate chain, history dependence is only one time step
-T = 700
+T = 100
 
 record_model_parameters = np.zeros((2, T))
 record_model_parameters[:, 0] = w_0
@@ -35,13 +36,15 @@ outguesser_choices[0] = np.random.rand() < p_init
 
 game.add_trial(agent_choices[0], outguesser_choices[0])
 
-h = 1
+h = np.array([1])
 for i in range(1, T):
+    h = np.array([agent_choices[i - 1]])
+
     # outguesser makes his choice
     outguesser_choices[i] = game.get_outguesser_response()
 
+
     # agent makes his choice
-    h = np.array([agent_choices[i - 1]])
     agent_choices[i] = maximum_a_posteriori(dummy_agent, h)
 
 

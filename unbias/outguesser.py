@@ -5,8 +5,12 @@ from training_data import sigmoid, AGENT_CHOICES
 
 class Outguesser:
     def predict_next_choice(self, history):
-        current_history = history[:len(self.model_parameters)-1]
-        return self.predict(self.model_parameters, current_history)
+        if history.shape[0] <= len(self.model_parameters)-1:
+            prediction = np.random.choice(AGENT_CHOICES,1)[0]
+        else:
+            current_history = history[-len(self.model_parameters)+1:]
+            prediction = self.predict(self.model_parameters, current_history)
+        return prediction
 
     def update_model(self, data):
         self.model_parameters = self.optimize(self.model_parameters, data)
@@ -22,7 +26,7 @@ class Outguesser:
         self.optimize = optimize
 
 
-def simple_gradient_descent(initial_weighting_vector, data, steps=100, learning_rate=0.001):
+def simple_gradient_descent(initial_weighting_vector, data, steps=100, learning_rate=0.05):
     """
 
     :param initial_weighting_vector: a vector of the form [b, w] where b is the bias and w is history weighing

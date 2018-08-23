@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 from IPython.display import display
 
+from outguesser import Outguesser, simple_gradient_descent, maximum_a_posteriori
+
 
 class GameConstants:
     trial_idx = 'TrialIdx'
@@ -43,24 +45,35 @@ class Game:
 
 
 def setup_game(g, max_trials):
+
+    def calculate_agent_score():
+        return np.sum(g.trials[GameConstants.agent_choice].values != g.trials[GameConstants.outguess_choice].values)
+
+
     def on_button_clicked(b):
-        choice = int(b.description)
-        reward = 1
-        g.provide_reward(choice)
-        g.add_trial(choice, reward)
+        outguesser_choice = g.get_outguesser_response()
+        agent_choice = int(b.description)
+        g.add_trial(agent_choice, outguesser_choice)
+
+        print "Your choice: {}  Our choice: {}".format(agent_choice, outguesser_choice)
         if g.number_of_trials == max_trials:
             print("You did it :)")
+            print("Your score: {}   Shannons score: {}".format(calculate_agent_score(), g.number_of_trials-calculate_agent_score()))
             button0.close()
             button1.close()
 
-    button0 = widgets.Button(
-        description='0')
+    button0 = widgets.Button(description='0')
 
-    button1 = widgets.Button(
-        description='1')
+    button1 = widgets.Button(description='1')
 
     widget_container = widgets.Box([button0, button1])
     display(widget_container)
 
     button0.on_click(on_button_clicked)
     button1.on_click(on_button_clicked)
+
+def genius(max_trials=10, history_dependence = 1):
+    prior = np.zeros((history_dependence+1,))
+    game = Game(Outguesser(simple_gradient_descent, maximum_a_posteriori, prior))
+    setup_game(game, max_trials)
+
