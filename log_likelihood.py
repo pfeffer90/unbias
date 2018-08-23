@@ -58,8 +58,11 @@ for i in range(1,T):
     else:
         L[i] = -(1-x[i])*np.log(1-sigmoid(w[:,i],h))
 
-plt.plot(np.linspace(1,T,T),w[0,:])
-plt.plot(np.linspace(1,T,T),w[1,:])
+plt.plot(w_gen[0]*np.ones((T,)), label='true bias', color='blue')
+plt.plot(np.linspace(1,T,T),w[0,:], label='estimated bias', color='blue', alpha=0.6)
+plt.plot(w_gen[1]*np.ones((T,)), label='true history dependence', color='red')
+plt.plot(np.linspace(1,T,T),w[1,:], label='estimated history dependence', color='red', alpha=0.6)
+plt.legend()
 plt.show()
 
 plt.plot(L)
