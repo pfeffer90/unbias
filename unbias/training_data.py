@@ -17,4 +17,4 @@ def generate_stationary_agent_choices(number_of_trials, w, initial_choices):
     return agent_choices
 
 
-AGENT_CHOICES = [1, -1]
+AGENT_CHOICES = [1, 0]
