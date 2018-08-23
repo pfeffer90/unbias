@@ -4,8 +4,9 @@ from training_data import sigmoid, AGENT_CHOICES
 
 
 class Outguesser:
-    def predict_next_choice(self):
-        return self.predict(self.model_parameters)
+    def predict_next_choice(self, history):
+        current_history = history[:len(self.model_parameters)-1]
+        return self.predict(self.model_parameters, current_history)
 
     def update_model(self, data):
         self.model_parameters = self.optimize(self.model_parameters, data)
@@ -48,5 +49,5 @@ def simple_gradient_descent(initial_weighting_vector, data, steps=100, learning_
 
 
 def maximum_a_posteriori(model_parameters, history):
-    p = sigmoid(model_parameters, history)
+    p = sigmoid(model_parameters, np.concatenate((np.array([1]), history)))
     return np.random.choice(AGENT_CHOICES, 1, p=[p, 1 - p])[0]

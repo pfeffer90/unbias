@@ -6,6 +6,7 @@ This script implements the simplest bayesian model to infer parameters for a bin
 import matplotlib.pyplot as plt
 import numpy as np
 
+from unbias.game import Game
 from unbias.outguesser import simple_gradient_descent, Outguesser, maximum_a_posteriori
 from unbias.training_data import sigmoid
 
@@ -23,24 +24,30 @@ T = 500
 
 record_model_parameters = np.zeros((2, T))
 record_model_parameters[:, 0] = w_0
-record_likelihood = np.zeros(T)
 
+game = Game(outguesser)
 
-x = np.zeros(T)
-x[0] = np.random.rand() < p_init
-h = np.ones(2)
+agent_choices = np.zeros(T)
+outguesser_choices = np.zeros(T)
+
+agent_choices[0] = np.random.rand() < p_init
+outguesser_choices[0] = np.random.rand() < p_init
+
+game.add_trial(agent_choices[0], outguesser_choices[0])
+
+h = 1
 for i in range(1, T):
-    # dummy makes his choice
-    h[1] = x[i - 1]
-    x[i] = maximum_a_posteriori(dummy_agent, h)
+    # outguesser makes his choice
 
-    outguesser.update_model(x[:i+1])
+    outguesser_choices[i] = game.get_outguesser_response()
 
-    record_model_parameters[:, i] = outguesser.model_parameters
-    if x[i] == 1:
-        record_likelihood[i] = -x[i] * np.log(sigmoid(record_model_parameters[:, i], h))
-    else:
-        record_likelihood[i] = -(1 - x[i]) * np.log(1 - sigmoid(record_model_parameters[:, i], h))
+    # agent makes his choice
+    h = np.array([agent_choices[i - 1]])
+    agent_choices[i] = maximum_a_posteriori(dummy_agent, h)
+
+    game.add_trial(agent_choices[i], outguesser_choices[i])
+
+    record_model_parameters[:, i] = game.outguesser.model_parameters
 
 plt.plot(dummy_agent[0] * np.ones((T,)), label='true bias', color='blue')
 plt.plot(np.linspace(1, T, T), record_model_parameters[0, :], label='estimated bias', color='blue', alpha=0.6)
@@ -49,5 +56,3 @@ plt.plot(np.linspace(1, T, T), record_model_parameters[1, :], label='estimated h
 plt.legend()
 plt.show()
 
-plt.plot(record_likelihood)
-plt.show()
