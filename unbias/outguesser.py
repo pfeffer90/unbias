@@ -1,22 +1,27 @@
 import numpy as np
+import pandas
 
 from training_data import sigmoid, AGENT_CHOICES
 
 
 class Outguesser:
     def predict_next_choice(self, history):
-        if history.shape[0] <= len(self.model_parameters)-1:
-            prediction = np.random.choice(AGENT_CHOICES,1)[0]
+        if history.shape[0] <= len(self.model_parameters) - 1:
+            prediction = np.random.choice(AGENT_CHOICES, 1)[0]
         else:
-            current_history = history[-len(self.model_parameters)+1:]
+            current_history = history[-len(self.model_parameters) + 1:]
             prediction = self.predict(self.model_parameters, current_history)
         return prediction
 
     def update_model(self, data):
         if data.shape[0] > len(self.model_parameters) - 1:
             self.model_parameters = self.optimize(self.model_parameters, data)
+        self.model_parameters = self.optimize(self.model_parameters, data)
+        if self.record:
+            self.recording_data_frame = pandas.concat(
+                [self.recording_data_frame, pandas.DataFrame(self._prepare_dict_with_model_params())])
 
-    def __init__(self, optimize, predict, model_parameters):
+    def __init__(self, optimize, predict, model_parameters, record=False):
         """
 
         :param optimizer:
@@ -25,6 +30,20 @@ class Outguesser:
         self.model_parameters = model_parameters
         self.predict = predict
         self.optimize = optimize
+        self.record = record
+
+        if self.record:
+            self._initialize_history_data_frame()
+
+    def _initialize_history_data_frame(self):
+        self.recording_data_frame = pandas.DataFrame(self._prepare_dict_with_model_params())
+
+    def _prepare_dict_with_model_params(self):
+        data_dict_keys = ['b'] + ["w_-{:d}".format(i) for i in range(1, len(self.model_parameters))]
+        model_dict = {}
+        for key, value in zip(data_dict_keys, self.model_parameters):
+            model_dict.update({key: [value]})
+        return model_dict
 
 
 def simple_gradient_descent(initial_weighting_vector, data, steps=100, learning_rate=0.05):

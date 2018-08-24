@@ -72,10 +72,10 @@ def get_buttons(on_button_clicked, descriptions=['0', '1']):
     return buttons
 
 
-def no_feedback_v1(g, max_trials):
-    def on_button_clicked(b):
+def no_feedback_v1(g, max_trials, finish_game):
+    def on_button_clicked(button):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = int(b.description)
+        agent_choice = int(button.description)
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
@@ -83,9 +83,10 @@ def no_feedback_v1(g, max_trials):
             game_area.close()
             score_widget = get_score_widget(g)
             display(score_widget)
+            finish_game(**data_collector)
 
     def react_to_name_entry(name_widget):
-        name = name_widget.value
+        data_collector.update({'name': name_widget.value})
         name_widget.close()
         display(game_area)
 
@@ -97,6 +98,8 @@ def no_feedback_v1(g, max_trials):
     buttons = get_buttons(on_button_clicked)
     progress_bar = get_progress_bar(max_trials)
     game_area = widgets.VBox([buttons, progress_bar])
+
+    data_collector = {}
 
 
 game_variants = {

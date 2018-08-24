@@ -5,10 +5,13 @@ from time import strftime
 import pandas as pd
 
 DATE_FORMAT = "%Y%m%d"
+AGENT_CHOICE_FILE_ID = "agent_choices_{:s}"
+MODEL_PARAM_FILE_ID = "model_params_{:s}"
+GAME_IDX_ENDING = "_{0:04d}.csv"
 
 
 def get_file_idx(filename, data_dir):
-    file_list = filter(lambda s: s.startswith(filename), listdir(data_dir))
+    file_list = list(filter(lambda s: s.startswith(filename), listdir(data_dir)))
     if len(file_list) == 0:
         previous_max_index = 0
     else:
@@ -35,11 +38,31 @@ def save_to_file(data_dir, file_name, data_frame):
     data_frame.to_csv(data_dir + '/' + file_name)
 
 
+def get_agent_choice_file(data_dir, agent_name):
+    agent_choices_part = AGENT_CHOICE_FILE_ID.format(agent_name)
+    file_idx = get_file_idx(agent_choices_part, data_dir)
+    return agent_choices_part + GAME_IDX_ENDING.format(file_idx)
+
+
+def get_model_choice_file(data_dir, agent_name):
+    model_param_part = MODEL_PARAM_FILE_ID.format(agent_name)
+    file_idx = get_file_idx(model_param_part, data_dir)
+    return model_param_part + GAME_IDX_ENDING.format(file_idx)
+
+
+def save_game(data_dir, game_meta_data, agent_name, game):
+    agent_choice_file = get_agent_choice_file(data_dir, agent_name)
+    model_param_file = get_model_choice_file(data_dir, agent_name)
+    save_to_file(data_dir, agent_choice_file, game.trials)
+    save_to_file(data_dir, model_param_file, game.outguesser.recording_data_frame)
+
+
+
 class GameMetaData:
     def add_agent_name(self, agent_name):
         self.meta_data_dict.update({'AgentName': agent_name})
 
-    def add_game_variant(self, game_variant):
+    def add_game_type(self, game_variant):
         self.meta_data_dict.update({'GameVariant': game_variant})
 
     def add_game_idx(self, game_idx):
@@ -51,11 +74,12 @@ class GameMetaData:
     def add_choice_recording_location(self, choices_file):
         self.meta_data_dict.update({'ChoicesFile': choices_file})
 
-    def add_inference_recording_location(self, model_paramters_file):
-        self.meta_data_dict.update({'ModelFile': model_paramters_file})
+    def add_inference_recording_location(self, model_parameters_file):
+        self.meta_data_dict.update({'ModelFile': model_parameters_file})
 
     def get_meta_data_dict(self):
         return self.meta_data_dict
 
-    def __init__(self):
+    def __init__(self, game_type):
         self.meta_data_dict = {'Date': time.strftime(DATE_FORMAT)}
+        self.add_game_type(game_type)
