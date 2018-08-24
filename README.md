@@ -1,5 +1,8 @@
 # unbias
-
+## Install 
+```
+conda env create -f environment.yml
+```
 ## Run tests
 ```
 make test
