@@ -15,6 +15,7 @@ Assume an agent with fixed $b \in R$ and $w \in R^N$, where $N$ is the memory st
  $$
 
 [Original Paper on the Outguessing Machine : (http://this1that1whatever.com/miscellany/mind-reader/Hagelbarger-SEER.pdf)]
+
 [ Shannon Paper : http://www.this1that1whatever.com/miscellany/mind-reader/Shannon-Mind-Reading.pdf]
 
  ### Look for algorithms to infer b and w for a stationary agent
