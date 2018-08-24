@@ -3,7 +3,7 @@ import pandas as pd
 
 from interfaces import game_variants
 from outguesser import Outguesser, simple_gradient_descent, maximum_a_posteriori
-from store import GameMetaData, save_to_file, save_game
+from store import GameMetaData, save_game
 
 
 class GameConstants:
@@ -53,10 +53,9 @@ class Game:
 def genius(game_type="no_feedback_v1", max_trials=10, history_dependence=1, record=False, data_dir='.'):
     def finish_game(**game_data):
         if record:
-            meta_data = GameMetaData(game_type)
             agent_name = game_data["name"]
+            meta_data = GameMetaData(game_type)
             save_game(data_dir, meta_data, agent_name, game)
-
 
     prior = np.zeros((history_dependence + 1,))
     game = Game(Outguesser(simple_gradient_descent, maximum_a_posteriori, prior, record))
