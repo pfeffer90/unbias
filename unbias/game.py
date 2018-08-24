@@ -1,9 +1,8 @@
-import ipywidgets as widgets
 import numpy as np
 import pandas as pd
-from IPython.display import display
 
 from outguesser import Outguesser, simple_gradient_descent, maximum_a_posteriori
+from interfaces import game_variants
 
 
 class GameConstants:
@@ -29,6 +28,12 @@ class Game:
     def get_outguesser_response(self):
         return self.outguesser.predict_next_choice(self.trials[GameConstants.agent_choice].values)
 
+    def get_agent_choices(self):
+        return self.trials[GameConstants.agent_choice].values
+    
+    def get_outguesser_choices(self):
+        return self.trials[GameConstants.outguess_choice].values
+
     def start(self):
         pass
 
@@ -44,35 +49,9 @@ class Game:
         self.trials = pd.DataFrame(columns=GameConstants.agent_data)
 
 
-def setup_game(g, max_trials):
-    def calculate_agent_score():
-        return np.sum(g.trials[GameConstants.agent_choice].values != g.trials[GameConstants.outguess_choice].values)
-
-    def on_button_clicked(b):
-        outguesser_choice = g.get_outguesser_response()
-        agent_choice = int(b.description)
-        g.add_trial(agent_choice, outguesser_choice)
-
-        print "Your choice: {}  Our choice: {}".format(agent_choice, outguesser_choice)
-        if g.number_of_trials == max_trials:
-            print("You did it :)")
-            print("Your score: {}   Shannons score: {}".format(calculate_agent_score(),
-                                                               g.number_of_trials - calculate_agent_score()))
-            button0.close()
-            button1.close()
-
-    button0 = widgets.Button(description='-1')
-
-    button1 = widgets.Button(description='1')
-
-    widget_container = widgets.Box([button0, button1])
-    display(widget_container)
-
-    button0.on_click(on_button_clicked)
-    button1.on_click(on_button_clicked)
-
-
-def genius(max_trials=10, history_dependence=1):
-    prior = np.zeros((history_dependence + 1,))
+def genius(game_type = "no_feedback_v1", max_trials=10, history_dependence = 1):
+    #get_user_info()
+    prior = np.zeros((history_dependence+1,))
     game = Game(Outguesser(simple_gradient_descent, maximum_a_posteriori, prior))
-    setup_game(game, max_trials)
+    game_variants[game_type](game, max_trials)
+
