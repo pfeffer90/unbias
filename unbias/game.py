@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from outguesser import Outguesser, simple_gradient_descent, maximum_a_posteriori
 from interfaces import game_variants
+from outguesser import Outguesser, simple_gradient_descent, maximum_a_posteriori
 
 
 class GameConstants:
@@ -30,7 +30,7 @@ class Game:
 
     def get_agent_choices(self):
         return self.trials[GameConstants.agent_choice].values
-    
+
     def get_outguesser_choices(self):
         return self.trials[GameConstants.outguess_choice].values
 
@@ -49,9 +49,8 @@ class Game:
         self.trials = pd.DataFrame(columns=GameConstants.agent_data)
 
 
-def genius(game_type = "no_feedback_v1", max_trials=10, history_dependence = 1):
-    #get_user_info()
-    prior = np.zeros((history_dependence+1,))
+def genius(game_type="no_feedback_v1", max_trials=10, history_dependence=1):
+    # get_user_info()
+    prior = np.zeros((history_dependence + 1,))
     game = Game(Outguesser(simple_gradient_descent, maximum_a_posteriori, prior))
     game_variants[game_type](game, max_trials)
-
