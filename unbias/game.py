@@ -61,7 +61,7 @@ def setup_game(g, max_trials):
             button0.close()
             button1.close()
 
-    button0 = widgets.Button(description='0')
+    button0 = widgets.Button(description='-1')
 
     button1 = widgets.Button(description='1')
 

@@ -13,7 +13,8 @@ class Outguesser:
         return prediction
 
     def update_model(self, data):
-        self.model_parameters = self.optimize(self.model_parameters, data)
+        if data.shape[0] > len(self.model_parameters) - 1:
+            self.model_parameters = self.optimize(self.model_parameters, data)
 
     def __init__(self, optimize, predict, model_parameters):
         """
@@ -46,7 +47,7 @@ def simple_gradient_descent(initial_weighting_vector, data, steps=100, learning_
 
     w = initial_weighting_vector  # initialize descent
     for i in range(1, steps):
-        dw = np.dot(x_pre, (x_target - sigmoid(w, x_pre)))
+        dw = np.dot(x_pre, ((x_target+1)/2 - sigmoid(w, x_pre)))
         w += learning_rate * dw
 
     return w
