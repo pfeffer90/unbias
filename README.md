@@ -21,6 +21,8 @@ Assume an agent with fixed $b \in R$ and $w \in R^N$, where $N$ is the memory st
 
 [ Shannon Paper : http://www.this1that1whatever.com/miscellany/mind-reader/Shannon-Mind-Reading.pdf]
 
+[Spontaneous flight manouveurs in flies: http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000443]
+
  ### Look for algorithms to infer b and w for a stationary agent
  
  * Bayesian inference: We divide the decision into pairs of current decision and history $(x_t, x_t-1)$ and try to calculate the posterior $p(b,w|{x_t, x_t-1})$
