@@ -37,4 +37,19 @@ Assume an agent with fixed $b \in R$ and $w \in R^N$, where $N$ is the memory st
  
  ### Get a jupyter notebook running with user interaction 
  
+ ### Run the jupyter notebook game on a jupyter hub server to allow online data collection
+ 
+ ### Run first experiment
+ 
+ * two conditions: without feedback and with feedback to test whether participants with feedback are less biased (maybe it is more interesting to just run without feedback to have a free test of biases, also more data, then run the other one on Tuesday)
+ * what do we want to analyse
+     - indiviudal bias and serial correlation structure
+     - performance of the outguesser (this is best done in the no feedback case, because then interactions with the algo are excluded, we should be able to run other outguessers against this data)
+ * what is missing
+     - make small self-generated data set for real life test
+     - check whether data structure is enough and allows the above analysis, try with self-generated data
+     - set up jupyter hub accounts for the people to play
+     - think of how many trials/rounds we need in each of the two experiments
+     - appropriate choice of learning rate and convergence check of the gradient descent
+ 
  
