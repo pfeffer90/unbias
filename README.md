@@ -1,4 +1,9 @@
 # unbias
+
+## Jupyter Hub for online experiments
+
+Follow [this link](http://142.93.247.119) to log on the jupyter hub and participate in the unbias experiments.
+
 ## Install 
 ```
 conda env create -f environment.yml
