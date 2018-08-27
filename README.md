@@ -58,5 +58,7 @@ Assume an agent with fixed $b \in R$ and $w \in R^N$, where $N$ is the memory st
      - appropriate choice of learning rate and convergence check of the gradient descent
      - problem with saving model parameters for history length larger than one
      
- 
+ ### Possible extensions
+ * non-stationarity? Kalman Filters
+ * optimal window length?
  
