@@ -56,5 +56,7 @@ Assume an agent with fixed $b \in R$ and $w \in R^N$, where $N$ is the memory st
      - set up jupyter hub accounts for the people to play
      - think of how many trials/rounds we need in each of the two experiments
      - appropriate choice of learning rate and convergence check of the gradient descent
+     - problem with saving model parameters for history length larger than one
+     
  
  
