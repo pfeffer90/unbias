@@ -70,7 +70,7 @@ def save_game(data_dir, game_meta_data, agent_name, game):
     game_meta_data.add_game_idx(game_idx)
     game_meta_data.add_choice_recording_location(agent_choice_file)
     game_meta_data.add_inference_recording_location(model_param_file)
-    game_meta_data.add_config_file(model_param_file)
+    game_meta_data.add_config_file('')
     dump_meta_data(data_dir, game_meta_data.get_meta_data_dict())
 
 
