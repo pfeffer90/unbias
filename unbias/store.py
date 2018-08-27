@@ -60,6 +60,7 @@ def get_model_choice_file(data_dir, agent_name):
 
 
 def save_game(data_dir, game_meta_data, agent_name, game):
+    agent_name = ''.join(agent_name.split()).lower()
     agent_choice_file = get_agent_choice_file(data_dir, agent_name)
     model_param_file = get_model_choice_file(data_dir, agent_name)
     game_idx = get_game_idx(data_dir, agent_name)
