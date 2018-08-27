@@ -1,3 +1,5 @@
+import json
+
 import numpy as np
 import pandas as pd
 
@@ -49,11 +51,20 @@ class Game:
         self.trials = pd.DataFrame(columns=GameConstants.agent_data)
 
 
-def genius(game_type="no_feedback_v1", max_trials=10, history_dependence=1, record=False, data_dir='.'):
+def experiment(config_file):
+    with open(config_file) as fp:
+        config = json.load(fp)
+    config.update({'config_file': config_file})
+    config_experiment(**config)
+
+
+def config_experiment(game_type="no_feedback_v1", max_trials=10, history_dependence=1, record=False, data_dir='.',
+                      config_file=''):
     def finish_game(**game_data):
         if record:
             agent_name = game_data["name"]
             meta_data = GameMetaData(game_type)
+            meta_data.add_config_file(config_file)
             save_game(data_dir, meta_data, agent_name, game)
 
     prior = np.zeros((history_dependence + 1,))
