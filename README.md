@@ -4,6 +4,12 @@
 
 Follow [this link](http://142.93.247.119) to log on the jupyter hub and participate in the unbias experiments.
 
+### Get the data from the experiments
+
+```bash
+make get_data
+```
+
 ## Install 
 ```
 conda env create -f environment.yml
