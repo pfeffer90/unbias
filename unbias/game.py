@@ -7,16 +7,15 @@ from store import GameMetaData, save_game
 
 
 class GameConstants:
-    trial_idx = 'TrialIdx'
     agent_choice = 'AgentChoice'
     outguess_choice = 'OutguessChoice'
 
-    agent_data = [trial_idx, agent_choice, outguess_choice]
+    agent_data = [agent_choice, outguess_choice]
 
 
 class Game:
     def add_trial(self, agent_choice, reward):
-        new_trial = pd.DataFrame(np.array([self.number_of_trials + 1, agent_choice, reward]).reshape(1, 3),
+        new_trial = pd.DataFrame(np.array([agent_choice, reward]).reshape(1, len(GameConstants.agent_data)),
                                  columns=GameConstants.agent_data)
 
         self.trials = pd.concat([self.trials, new_trial], ignore_index=True)
