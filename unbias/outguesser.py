@@ -19,7 +19,8 @@ class Outguesser:
         self.model_parameters = self.optimize(self.model_parameters, data)
         if self.record:
             self.recording_data_frame = pandas.concat(
-                [self.recording_data_frame, pandas.DataFrame(self._prepare_dict_with_model_params())])
+                [self.recording_data_frame, pandas.DataFrame(self._prepare_dict_with_model_params())],
+                ignore_index=True)
 
     def __init__(self, optimize, predict, model_parameters, record=False):
         """
@@ -66,7 +67,7 @@ def simple_gradient_descent(initial_weighting_vector, data, steps=100, learning_
 
     w = initial_weighting_vector  # initialize descent
     for i in range(1, steps):
-        dw = np.dot(x_pre, ((x_target+1)/2 - sigmoid(w, x_pre)))
+        dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre)))
         w += learning_rate * dw
 
     return w
