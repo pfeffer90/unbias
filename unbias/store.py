@@ -5,7 +5,7 @@ from time import strftime
 
 import pandas as pd
 
-DATE_FORMAT = "%Y%m%d"
+DATE_FORMAT = "%Y%m%d_%H:%M:%S"
 AGENT_CHOICE_FILE_ID = "agent_choices_{:s}"
 MODEL_PARAM_FILE_ID = "model_params_{:s}"
 GAME_IDX_ENDING = "_{0:04d}.csv"
