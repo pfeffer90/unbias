@@ -19,7 +19,7 @@ class Game:
         new_trial = pd.DataFrame(np.array([self.number_of_trials + 1, agent_choice, reward]).reshape(1, 3),
                                  columns=GameConstants.agent_data)
 
-        self.trials = pd.concat([self.trials, new_trial])
+        self.trials = pd.concat([self.trials, new_trial], ignore_index=True)
         self.trials[GameConstants.agent_choice] = self.trials[GameConstants.agent_choice].apply(np.int64)
 
         self.outguesser.update_model(self.trials[GameConstants.agent_choice].values)

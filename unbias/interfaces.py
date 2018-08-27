@@ -9,7 +9,7 @@ def feedback_v1(g, max_trials):
 
     def on_button_clicked(b):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = int(b.description)
+        agent_choice = 2*int(b.description) - 1
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
@@ -75,7 +75,7 @@ def get_buttons(on_button_clicked, descriptions=['0', '1']):
 def no_feedback_v1(g, max_trials, finish_game):
     def on_button_clicked(button):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = int(button.description)
+        agent_choice = 2*int(button.description)-1
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
