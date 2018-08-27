@@ -33,8 +33,8 @@ def dump_meta_data(data_dir, meta_data_dict):
     if not os.path.isfile(meta_data_file_path):
         updated_meta_data = new_meta_data
     else:
-        prev_meta_data = pd.read_csv(meta_data_file_path)
-        updated_meta_data = pd.concat([prev_meta_data, new_meta_data])
+        prev_meta_data = pd.read_csv(meta_data_file_path, index_col=0)
+        updated_meta_data = pd.concat([prev_meta_data, new_meta_data], ignore_index=True)
     updated_meta_data.to_csv(meta_data_file_path)
 
 
