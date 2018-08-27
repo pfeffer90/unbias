@@ -16,7 +16,6 @@ class Outguesser:
     def update_model(self, data):
         if data.shape[0] > len(self.model_parameters) - 1:
             self.model_parameters = self.optimize(self.model_parameters, data)
-        self.model_parameters = self.optimize(self.model_parameters, data)
         if self.record:
             self.recording_data_frame = pandas.concat(
                 [self.recording_data_frame, pandas.DataFrame(self._prepare_dict_with_model_params())],
