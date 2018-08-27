@@ -9,7 +9,7 @@ def feedback_v1(g, max_trials):
 
     def on_button_clicked(b):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = 2*int(b.description) - 1
+        agent_choice = 2 * int(b.description) - 1
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
@@ -53,9 +53,13 @@ def calculate_outguesser_score(game):
 
 
 def get_score_widget(game):
-    score_widget = widgets.VBox([widgets.Label("You did it :)"), widgets.Label(
-        "Your score: {}   Shannons score: {}".format(calculate_agent_score(game), calculate_outguesser_score(game)))])
+    score_widget = widgets.Label(
+        "Your score: {}   Our score: {}".format(calculate_agent_score(game), calculate_outguesser_score(game)))
     return score_widget
+
+
+def get_thank_you_message():
+    return widgets.Label("Thank you for participating :)")
 
 
 def get_progress_bar(max_trials):
@@ -75,14 +79,13 @@ def get_buttons(on_button_clicked, descriptions=['0', '1']):
 def no_feedback_v1(g, max_trials, finish_game):
     def on_button_clicked(button):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = 2*int(button.description)-1
+        agent_choice = 2 * int(button.description) - 1
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
         if g.number_of_trials == max_trials:
             game_area.close()
-            score_widget = get_score_widget(g)
-            display(score_widget)
+            display(get_thank_you_message())
             finish_game(**data_collector)
 
     def react_to_name_entry(name_widget):
@@ -90,7 +93,8 @@ def no_feedback_v1(g, max_trials, finish_game):
         name_widget.close()
         display(game_area)
 
-    name_field = widgets.Text(value='', placeholder='What\'s your name?', description='Name:', disabled=False)
+    name_field = widgets.Text(value='', placeholder='Your name? <johnsmith>', description='Name:',
+                              disabled=False)
     name_field.on_submit(react_to_name_entry)
 
     display(name_field)
