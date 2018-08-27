@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,GameIdx,GameVariant,ModelFile
+0,bhanu,agent_choices_bhanu_0001.csv,config/experiment1.json,20180827_23:17:35,1,no_feedback_v1,model_params_bhanu_0001.csv
