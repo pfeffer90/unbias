@@ -3,5 +3,5 @@
   "max_trials": 250,
   "history_dependence": 1,
   "record": true,
-  "data_dir": "../experiments"
+  "data_dir": "/home/jupyter-pfeiffer/unbias/experiments"
 }
