@@ -76,8 +76,45 @@ def get_buttons(on_button_clicked, descriptions=['0', '1']):
     return buttons
 
 
+def no_feedback_v2(g, max_trials, finish_game):
+    def get_agent_choice(button):
+        outguesser_choice = g.get_outguesser_response()
+        agent_choice = 2 * int(button.description) - 1
+        g.add_trial(agent_choice, outguesser_choice)
+        progress_bar.value += 1
+
+        if g.number_of_trials == max_trials:
+            game_area.close()
+            display(get_thank_you_message())
+            finish_game(**data_collector)
+
+    def react_to_mobile_vs_desktop_info(button):
+        data_collector.update({'device_type': button.description})
+        mobile_vs_desktop_buttons.close()
+        display(game_area)
+
+    def react_to_name_entry(name_widget):
+        data_collector.update({'name': name_widget.value})
+        name_widget.close()
+        display(mobile_vs_desktop_buttons)
+
+    name_field = widgets.Text(value='', placeholder='Your name? <johnsmith>', description='Name:',
+                              disabled=False)
+    name_field.on_submit(react_to_name_entry)
+
+    display(name_field)
+
+    mobile_vs_desktop_buttons = get_buttons(react_to_mobile_vs_desktop_info, descriptions=['Mobile', 'Desktop'])
+
+    choice_buttons = get_buttons(get_agent_choice)
+    progress_bar = get_progress_bar(max_trials)
+    game_area = widgets.VBox([choice_buttons, progress_bar])
+
+    data_collector = {}
+
+
 def no_feedback_v1(g, max_trials, finish_game):
-    def on_button_clicked(button):
+    def get_agent_choice(button):
         outguesser_choice = g.get_outguesser_response()
         agent_choice = 2 * int(button.description) - 1
         g.add_trial(agent_choice, outguesser_choice)
@@ -99,13 +136,14 @@ def no_feedback_v1(g, max_trials, finish_game):
 
     display(name_field)
 
-    buttons = get_buttons(on_button_clicked)
+    choice_buttons = get_buttons(get_agent_choice)
     progress_bar = get_progress_bar(max_trials)
-    game_area = widgets.VBox([buttons, progress_bar])
+    game_area = widgets.VBox([choice_buttons, progress_bar])
 
     data_collector = {}
 
 
 game_variants = {
-    "no_feedback_v1": no_feedback_v1
+    "no_feedback_v1": no_feedback_v1,
+    "no_feedback_v2": no_feedback_v2
 }
