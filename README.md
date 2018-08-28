@@ -1,5 +1,7 @@
 # unbias
+## Presentation
 
+See [here](https://docs.google.com/presentation/d/1myHKLw5FJ7dVj9z0cim1B9SVYIIQ15oYmgUA_a2Quxg/edit?usp=sharing).
 ## Jupyter Hub for online experiments
 
 Follow [this link](http://142.93.247.119) to log on the jupyter hub and participate in the unbias experiments.
