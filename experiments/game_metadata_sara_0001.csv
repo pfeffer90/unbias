@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,sara,agent_choices_sara_0001.csv,config/experiment2.json,20180828_14:24:07,Desktop,1,no_feedback_v2,model_params_sara_0001.csv

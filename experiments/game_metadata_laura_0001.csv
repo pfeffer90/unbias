@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,laura,agent_choices_laura_0001.csv,config/experiment2.json,20180828_14:09:52,Mobile,1,no_feedback_v2,model_params_laura_0001.csv

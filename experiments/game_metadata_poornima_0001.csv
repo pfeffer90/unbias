@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,poornima,agent_choices_poornima_0001.csv,config/experiment2.json,20180828_14:07:53,Mobile,1,no_feedback_v2,model_params_poornima_0001.csv
