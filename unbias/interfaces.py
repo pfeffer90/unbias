@@ -88,7 +88,7 @@ def no_feedback_v2(g, max_trials, finish_game):
             display(get_thank_you_message())
             finish_game(**data_collector)
 
-    def react_to_mobile_vs_deskop_info(button):
+    def react_to_mobile_vs_desktop_info(button):
         data_collector.update({'interface': button.description})
         mobile_vs_desktop_buttons.close()
         display(game_area)
@@ -104,7 +104,7 @@ def no_feedback_v2(g, max_trials, finish_game):
 
     display(name_field)
 
-    mobile_vs_desktop_buttons = get_buttons(react_to_mobile_vs_deskop_info, descriptions=['Mobile', 'Desktop'])
+    mobile_vs_desktop_buttons = get_buttons(react_to_mobile_vs_desktop_info, descriptions=['Mobile', 'Desktop'])
 
     choice_buttons = get_buttons(get_agent_choice)
     progress_bar = get_progress_bar(max_trials)
