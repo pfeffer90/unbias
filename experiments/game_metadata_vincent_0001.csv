@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,GameIdx,GameVariant,ModelFile
+0,vincent,agent_choices_vincent_0001.csv,config/experiment1.json,20180828_08:29:07,1,no_feedback_v1,model_params_vincent_0001.csv
