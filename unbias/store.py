@@ -96,6 +96,9 @@ class GameMetaData:
     def add_inference_recording_location(self, model_parameters_file):
         self.meta_data_dict.update({'ModelFile': model_parameters_file})
 
+    def add_device_type(self, device_type):
+        self.meta_data_dict.update({'DeviceType': device_type})
+
     def get_meta_data_dict(self):
         return self.meta_data_dict
 

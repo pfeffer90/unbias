@@ -63,8 +63,10 @@ def config_experiment(game_type="no_feedback_v1", max_trials=10, history_depende
     def finish_game(**game_data):
         if record:
             agent_name = game_data["name"]
+            device_type = game_data["device_type"]
             meta_data = GameMetaData(game_type)
             meta_data.add_config_file(config_file)
+            meta_data.add_device_type(device_type)
             save_game(data_dir, meta_data, agent_name, game)
 
     prior = np.zeros((history_dependence + 1,))
