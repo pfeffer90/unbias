@@ -1,2 +1,2 @@
-,AgentName,ChoicesFile,ConfigFile,Date,GameIdx,GameVariant,ModelFile
-0,alessandro,agent_choices_alessandro_0001.csv,config/experiment1.json,20180828_08:31:30,1,no_feedback_v1,model_params_alessandro_0001.csv
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,alessandro,agent_choices_alessandro_0001.csv,config/experiment1.json,20180828_08:31:30,Desktop,1,no_feedback_v1,model_params_alessandro_0001.csv
