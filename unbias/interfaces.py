@@ -89,7 +89,7 @@ def no_feedback_v2(g, max_trials, finish_game):
             finish_game(**data_collector)
 
     def react_to_mobile_vs_desktop_info(button):
-        data_collector.update({'interface': button.description})
+        data_collector.update({'device_type': button.description})
         mobile_vs_desktop_buttons.close()
         display(game_area)
 
