@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 METADATA_FILE_PREFIX = "game_metadata_"
-METADATA_COLUMNS = ['AgentName', 'ChoicesFile', 'ConfigFile', 'Date', 'GameIdx', 'GameVariant', 'ModelFile']
+METADATA_COLUMNS = ['AgentName', 'ChoicesFile', 'ConfigFile', 'Date', 'DeviceType', 'GameIdx', 'GameVariant', 'ModelFile']
 
 def load_common_metadata(data_dir):
     file_list = list(filter(lambda s: s.startswith(METADATA_FILE_PREFIX), os.listdir(data_dir)))
