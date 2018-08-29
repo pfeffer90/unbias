@@ -118,4 +118,4 @@ def momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_mi
 
 def maximum_a_posteriori(model_parameters, history):
     p = sigmoid(model_parameters, history)
-    return np.random.choice(AGENT_CHOICES, 1, p=[p, 1 - p])[0]
+    return AGENT_CHOICES[0] if p>=0.5 else AGENT_CHOICES[1]
