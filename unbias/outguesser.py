@@ -60,7 +60,7 @@ def linear_choice_history_dependent_model(history_weights, choice_history):
         return history_weights
     else:
         in_data, out_data = separate_choices_sequences_into_history_and_choice(choice_history, history_length)
-        return simple_gradient_descent(history_weights, in_data, out_data)
+        return momentum_gradient_descent(history_weights, in_data, out_data)
 
 
 def simple_gradient_descent(initial_weighting_vector, in_data, out_data, steps=100, learning_rate=0.05):
@@ -76,7 +76,7 @@ def simple_gradient_descent(initial_weighting_vector, in_data, out_data, steps=1
     x_pre = in_data
     x_target = out_data
 
-    w = initial_weighting_vector  # initialize descent
+    w = np.array(initial_weighting_vector, copy=True)  # initialize descent
     for i in range(1, steps):
         dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre)))
         w += learning_rate * dw
@@ -99,7 +99,7 @@ def momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_mi
     x_target = out_data
 
     dw_prev = 1e4
-    w = initial_weighting_vector  # initialize descent
+    w = np.array(initial_weighting_vector, copy=True)  # initialize descent
     gamma = 0.5
     v = np.zeros((len(initial_weighting_vector),))
     for i in range(1, steps + 1):
