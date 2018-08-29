@@ -4,7 +4,9 @@ import numpy as np
 import pandas as pd
 
 from interfaces import game_variants
-from outguesser import Outguesser, simple_gradient_descent, maximum_a_posteriori
+from outguesser import Outguesser, simple_gradient_descent, maximum_a_posteriori, momentum_gradient_descent, regularized_momentum_gradient_descent,\
+    linear_choice_history_dependent_model, choice_history_reward_history_model, linear_choice_history_dependent_model_predictor, \
+    choice_history_reward_history_model_predictor
 from store import GameMetaData, save_game
 
 
@@ -23,12 +25,12 @@ class Game:
         self.trials = pd.concat([self.trials, new_trial], ignore_index=True)
         self.trials[GameConstants.agent_choice] = self.trials[GameConstants.agent_choice].apply(np.int64)
 
-        self.outguesser.update_model(self.trials[GameConstants.agent_choice].values)
+        self.outguesser.update_model(self.trials[[GameConstants.agent_choice, GameConstants.outguess_choice]].values.astype(int))
 
         self.number_of_trials += 1
 
     def get_outguesser_response(self):
-        return self.outguesser.predict_next_choice(self.trials[GameConstants.agent_choice].values)
+        return self.outguesser.predict_next_choice(self.trials[[GameConstants.agent_choice, GameConstants.outguess_choice]].values.astype(int))
 
     def get_agent_choices(self):
         return self.trials[GameConstants.agent_choice].values
@@ -70,5 +72,5 @@ def config_experiment(game_type="no_feedback_v1", max_trials=10, history_depende
             save_game(data_dir, meta_data, agent_name, game)
 
     prior = np.zeros((history_dependence + 1,))
-    game = Game(Outguesser(simple_gradient_descent, maximum_a_posteriori, prior, record))
+    game = Game(Outguesser(choice_history_reward_history_model,choice_history_reward_history_model_predictor, prior, record))
     game_variants[game_type](game, max_trials, finish_game)
