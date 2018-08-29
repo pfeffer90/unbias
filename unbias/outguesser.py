@@ -83,23 +83,21 @@ def simple_gradient_descent(initial_weighting_vector, in_data, out_data, steps=1
     return w
 
 
-def momentum_gradient_descent(initial_weighting_vector, data, dw_min=1e-3, steps=1000, learning_rate=0.1):
+def momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_min=1e-3, steps=1000, learning_rate=0.1):
     """
 
     :param initial_weighting_vector: a vector of the form [b, w] where b is the bias and w is history weighing
-    :param data: numpy array with N choices in {-1,1}
+    :param in_data:
+    :param out_data:
+    :param dw_min: convergence criterion
     :param steps:
     :param learning_rate:
     :return:
     """
 
-    history_length = len(initial_weighting_vector) - 1
-    number_of_data_points = data.shape[0] - history_length
-    x_pre = np.ones((history_length + 1, number_of_data_points))
-    for i in range(1, history_length + 1):
-        x_pre[i, :] = data[i - 1:i + number_of_data_points - 1]
+    x_pre = in_data
+    x_target = out_data
 
-    x_target = data[history_length:]
     dw_prev = 1e4
     w = initial_weighting_vector  # initialize descent
     gamma = 0.5
