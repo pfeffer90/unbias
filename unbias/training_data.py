@@ -9,7 +9,7 @@ def generate_stationary_agent_choices(number_of_trials, w, initial_choices):
     agent_choices = np.zeros((number_of_trials,))
     history_length = w.shape[0]
     agent_choices[:history_length - 1] = initial_choices
-    for i in range(number_of_trials - history_length):
+    for i in range(number_of_trials - history_length + 1):
         history = np.concatenate([np.array([1]), agent_choices[i:i + history_length - 1]])
         probability_for_one = sigmoid(w, history)
         agent_choices[i + history_length - 1] = \
