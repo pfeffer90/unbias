@@ -83,6 +83,41 @@ def simple_gradient_descent(initial_weighting_vector, in_data, out_data, steps=1
     return w
 
 
+def momentum_gradient_descent(initial_weighting_vector, data, dw_min=1e-3, steps=1000, learning_rate=0.1):
+    """
+
+    :param initial_weighting_vector: a vector of the form [b, w] where b is the bias and w is history weighing
+    :param data: numpy array with N choices in {-1,1}
+    :param steps:
+    :param learning_rate:
+    :return:
+    """
+
+    history_length = len(initial_weighting_vector) - 1
+    number_of_data_points = data.shape[0] - history_length
+    x_pre = np.ones((history_length + 1, number_of_data_points))
+    for i in range(1, history_length + 1):
+        x_pre[i, :] = data[i - 1:i + number_of_data_points - 1]
+
+    x_target = data[history_length:]
+    dw_prev = 1e4
+    w = initial_weighting_vector  # initialize descent
+    gamma = 0.5
+    v = np.zeros((len(initial_weighting_vector),))
+    for i in range(1, steps + 1):
+        dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre)))
+        v = gamma * v + learning_rate * dw
+        w += v
+
+        if np.linalg.norm(dw) < dw_min:
+            break
+        if np.linalg.norm(dw) > np.linalg.norm(dw_prev):
+            learning_rate /= 2
+        dw_prev = dw
+
+    return w
+
+
 def maximum_a_posteriori(model_parameters, history):
     p = sigmoid(model_parameters, np.concatenate((np.array([1]), history)))
     return np.random.choice(AGENT_CHOICES, 1, p=[p, 1 - p])[0]
