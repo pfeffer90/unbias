@@ -116,6 +116,40 @@ def momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_mi
     return w
 
 
+def regularized_momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_min=1e-3, steps=1000, learning_rate=0.1, lamb=0.1):
+    """
+
+    :param initial_weighting_vector: a vector of the form [b, w] where b is the bias and w is history weighing
+    :param in_data:
+    :param out_data:
+    :param dw_min: convergence criterion
+    :param steps:
+    :param learning_rate:
+    :param lamb: regularizer
+    :return:
+    """
+
+    x_pre = in_data
+    x_target = out_data
+
+    dw_prev = 1e4
+    w = initial_weighting_vector  # initialize descent
+    gamma = 0.5
+    v = np.zeros((len(initial_weighting_vector),))
+    for i in range(1, steps + 1):
+        dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre))) + lamb*w
+        v = gamma * v + learning_rate * dw
+        w += v
+
+        if np.linalg.norm(dw) < dw_min:
+            break
+        if np.linalg.norm(dw) > np.linalg.norm(dw_prev):
+            learning_rate /= 2
+        dw_prev = dw
+
+    return w
+
+
 def maximum_a_posteriori(model_parameters, history):
     p = sigmoid(model_parameters, history)
     return AGENT_CHOICES[0] if p>=0.5 else AGENT_CHOICES[1]
