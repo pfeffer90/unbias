@@ -14,8 +14,7 @@ class Outguesser:
         return prediction
 
     def update_model(self, data):
-        if data.shape[0] > len(self.model_parameters) - 1:
-            self.model_parameters = self.optimize(self.model_parameters, data)
+        self.model_parameters = self.optimize(self.model_parameters, data)
         if self.record:
             self.recording_data_frame = pandas.concat(
                 [self.recording_data_frame, pandas.DataFrame(self._prepare_dict_with_model_params())],
@@ -46,7 +45,25 @@ class Outguesser:
         return model_dict
 
 
-def simple_gradient_descent(initial_weighting_vector, data, steps=100, learning_rate=0.05):
+def generate_choice_data(choice_history, history_length):
+    number_of_data_points = choice_history.shape[0] - history_length
+    choice_histories = np.ones((history_length + 1, number_of_data_points))
+    for i in range(1, history_length + 1):
+        choice_histories[i, :] = choice_history[i - 1:i + number_of_data_points - 1]  # TODO change
+    choice_outcomes = choice_history[history_length:]
+    return choice_histories, choice_outcomes
+
+
+def linear_choice_history_dependent_model(history_weights, choice_history):
+    history_length = len(history_weights)-1
+    if choice_history.shape[0] <= history_length:
+        return history_weights
+    else:
+        in_data, out_data = generate_choice_data(choice_history, history_length)
+        return simple_gradient_descent(history_weights, in_data, out_data)
+
+
+def simple_gradient_descent(initial_weighting_vector, in_data, out_data, steps=100, learning_rate=0.05):
     """
 
     :param initial_weighting_vector: a vector of the form [b, w] where b is the bias and w is history weighing
@@ -56,19 +73,13 @@ def simple_gradient_descent(initial_weighting_vector, data, steps=100, learning_
     :return:
     """
 
-    history_length = len(initial_weighting_vector) - 1
-    number_of_data_points = data.shape[0] - history_length
-    x_pre = np.ones((history_length + 1, number_of_data_points))
-    for i in range(1, history_length + 1):
-        x_pre[i, :] = data[i - 1:i + number_of_data_points - 1]
-
-    x_target = data[history_length:]
+    x_pre = in_data
+    x_target = out_data
 
     w = initial_weighting_vector  # initialize descent
     for i in range(1, steps):
         dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre)))
         w += learning_rate * dw
-
     return w
 
 
