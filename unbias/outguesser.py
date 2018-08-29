@@ -71,9 +71,9 @@ def choice_history_reward_history_model(history_weights, choice_history):
         reward_choice_history = np.multiply(choice_history[:,0],reward_history)
         in_choice_data, out_choice_data = separate_choices_sequences_into_history_and_choice(choice_history[:,0], history_length)
         in_reward_choice_data, out_reward_data = separate_choices_sequences_into_history_and_choice(reward_choice_history, history_length)
-        ones_row = np.ones((1, choice_history.shape[0] - history_length))
-        in_data = np.concatenate((ones_row, in_choice_data), axis=0)
-        in_data = np.concatenate((in_data, in_reward_choice_data), axis=0)
+        #ones_row = np.ones((1, choice_history.shape[0] - history_length))
+        #in_data = np.concatenate((ones_row, in_choice_data), axis=0) #this already happen in separate_choices_sequences_into...
+        in_data = np.concatenate((in_choice_data, in_reward_choice_data), axis=0)
         return momentum_gradient_descent(history_weights, in_data, out_choice_data)
 
 
