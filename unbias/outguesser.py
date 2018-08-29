@@ -45,7 +45,7 @@ class Outguesser:
         return model_dict
 
 
-def generate_choice_data(choice_history, history_length):
+def separate_choices_sequences_into_history_and_choice(choice_history, history_length):
     number_of_data_points = choice_history.shape[0] - history_length
     choice_histories = np.ones((history_length + 1, number_of_data_points))
     for i in range(1, history_length + 1):
@@ -59,7 +59,7 @@ def linear_choice_history_dependent_model(history_weights, choice_history):
     if choice_history.shape[0] <= history_length:
         return history_weights
     else:
-        in_data, out_data = generate_choice_data(choice_history, history_length)
+        in_data, out_data = separate_choices_sequences_into_history_and_choice(choice_history, history_length)
         return simple_gradient_descent(history_weights, in_data, out_data)
 
 
