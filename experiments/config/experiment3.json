@@ -1,0 +1,9 @@
+{
+  "game_type": "feedback_v2",
+  "max_trials": 10,
+  "history_dependence": 1,
+  "record": true,
+  "data_dir": "../experiments",
+  "update_model": "choice_history",
+  "predictor": "choice_predictor"
+}

@@ -54,7 +54,8 @@ def calculate_outguesser_score(game):
 
 def get_score_widget(game):
     score_widget = widgets.Label(
-        "Your final score: {}   My final score: {}".format(calculate_agent_score(game), calculate_outguesser_score(game)))
+        "Your final score: {}   My final score: {}".format(calculate_agent_score(game),
+                                                           calculate_outguesser_score(game)))
     return score_widget
 
 
@@ -119,19 +120,19 @@ def feedback_v2(g, max_trials, finish_game):
         agent_choice = 2 * int(button.description) - 1
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
-        
+
         with prev_result:
-            if agent_choice==outguesser_choice:
-                print "You lose!"
-            else: 
-                print "You win!"
-            print "Your score: %d  My score: %d"%(calculate_agent_score(g), calculate_outguesser_score(g))
+            if agent_choice == outguesser_choice:
+                print("You lose!")
+            else:
+                print("You win!")
+            print("Your score: %d  My score: %d" % (calculate_agent_score(g), calculate_outguesser_score(g)))
         prev_result.clear_output(True)
 
         if g.number_of_trials == max_trials:
             game_area.close()
             display(get_thank_you_message())
-            #display(get_final_score_message())
+            # display(get_final_score_message())
             finish_game(**data_collector)
 
     def react_to_mobile_vs_desktop_info(button):
