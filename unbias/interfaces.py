@@ -54,7 +54,7 @@ def calculate_outguesser_score(game):
 
 def get_score_widget(game):
     score_widget = widgets.Label(
-        "Your score: {}   Our score: {}".format(calculate_agent_score(game), calculate_outguesser_score(game)))
+        "Your final score: {}   My final score: {}".format(calculate_agent_score(game), calculate_outguesser_score(game)))
     return score_widget
 
 
@@ -113,6 +113,53 @@ def no_feedback_v2(g, max_trials, finish_game):
     data_collector = {}
 
 
+def feedback_v2(g, max_trials, finish_game):
+    def get_agent_choice(button):
+        outguesser_choice = g.get_outguesser_response()
+        agent_choice = 2 * int(button.description) - 1
+        g.add_trial(agent_choice, outguesser_choice)
+        progress_bar.value += 1
+        
+        with prev_result:
+            if agent_choice==outguesser_choice:
+                print "You lose!"
+            else: 
+                print "You win!"
+            print "Your score: %d  My score: %d"%(calculate_agent_score(g), calculate_outguesser_score(g))
+        prev_result.clear_output(True)
+
+        if g.number_of_trials == max_trials:
+            game_area.close()
+            display(get_thank_you_message())
+            #display(get_final_score_message())
+            finish_game(**data_collector)
+
+    def react_to_mobile_vs_desktop_info(button):
+        data_collector.update({'device_type': button.description})
+        mobile_vs_desktop_buttons.close()
+        display(game_area)
+
+    def react_to_name_entry(name_widget):
+        data_collector.update({'name': name_widget.value})
+        name_widget.close()
+        display(mobile_vs_desktop_buttons)
+
+    name_field = widgets.Text(value='', placeholder='Your name? <johnsmith>', description='Name:',
+                              disabled=False)
+    name_field.on_submit(react_to_name_entry)
+
+    display(name_field)
+
+    mobile_vs_desktop_buttons = get_buttons(react_to_mobile_vs_desktop_info, descriptions=['Mobile', 'Desktop'])
+
+    choice_buttons = get_buttons(get_agent_choice)
+    progress_bar = get_progress_bar(max_trials)
+    prev_result = widgets.Output(layout={'border': '1px solid black'})
+    game_area = widgets.VBox([choice_buttons, progress_bar, prev_result])
+
+    data_collector = {}
+
+
 def no_feedback_v1(g, max_trials, finish_game):
     def get_agent_choice(button):
         outguesser_choice = g.get_outguesser_response()
@@ -145,5 +192,7 @@ def no_feedback_v1(g, max_trials, finish_game):
 
 game_variants = {
     "no_feedback_v1": no_feedback_v1,
-    "no_feedback_v2": no_feedback_v2
+    "no_feedback_v2": no_feedback_v2,
+    "feedback_v1": feedback_v1,
+    "feedback_v2": feedback_v2
 }
