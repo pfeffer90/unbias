@@ -1,5 +1,6 @@
 import ipywidgets as widgets
 import numpy as np
+import time
 from IPython.display import display
 
 
@@ -83,6 +84,12 @@ def get_choice_value_from_click(button_description):
     else:
         return 1
 
+def get_description_from_choice(choice):
+    if choice == -1:
+        return "Heads"
+    else:
+        return "Tails"
+
 
 def no_feedback_v2(g, max_trials, finish_game):
     def get_agent_choice(button):
@@ -129,11 +136,18 @@ def feedback_v2(g, max_trials, finish_game):
         progress_bar.value += 1
 
         with prev_result:
+            print("{:s}   The Oraculo".format(data_collector["name"]))
+            print("%d - %d" % (calculate_agent_score(g), calculate_outguesser_score(g)))
             if agent_choice == outguesser_choice:
-                print("You lose!")
+                button.button_style='danger'
+                msg = "(You lost!)"
             else:
-                print("You win!")
-            print("Your score: %d  My score: %d" % (calculate_agent_score(g), calculate_outguesser_score(g)))
+                button.button_style='success'
+                msg = "(You won!)"
+            #print("{:s} - {:s}   {:s}".format(get_description_from_choice(agent_choice), get_description_from_choice(outguesser_choice), msg))
+
+        time.sleep(0.3)
+        button.button_style = ''
         prev_result.clear_output(True)
 
         if g.number_of_trials == max_trials:
@@ -145,7 +159,11 @@ def feedback_v2(g, max_trials, finish_game):
     def react_to_mobile_vs_desktop_info(button):
         data_collector.update({'device_type': button.description})
         mobile_vs_desktop_buttons.close()
+        with prev_result:
+            print("{:s}   The Oraculo".format(data_collector["name"]))
+            print("%d - %d" % (0, 0))
         display(game_area)
+        prev_result.clear_output(True)
 
     def react_to_name_entry(name_widget):
         data_collector.update({'name': name_widget.value})
@@ -163,7 +181,7 @@ def feedback_v2(g, max_trials, finish_game):
     choice_buttons = get_buttons(get_agent_choice)
     progress_bar = get_progress_bar(max_trials)
     prev_result = widgets.Output(layout={'border': '1px solid black'})
-    game_area = widgets.VBox([choice_buttons, progress_bar, prev_result])
+    game_area = widgets.VBox([prev_result, choice_buttons, progress_bar])
 
     data_collector = {}
 
