@@ -1,9 +1,9 @@
 {
   "game_type": "feedback_v2",
-  "max_trials": 10,
-  "history_dependence": 1,
+  "max_trials": 250,
+  "history_dependence": 4,
   "record": true,
-  "data_dir": "../experiments",
+  "data_dir": "/home/jupyter-pfeiffer/unbias/experiments",
   "update_model": "choice_history",
   "predictor": "choice_predictor"
 }

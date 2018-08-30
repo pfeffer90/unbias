@@ -194,7 +194,10 @@ def regularized_momentum_gradient_descent(initial_weighting_vector, in_data, out
 
     return w
 
-
 def maximum_a_posteriori(model_parameters, history):
+    p = sigmoid(model_parameters, history)
+    return np.random.choice(AGENT_CHOICES, p=[p, 1-p])
+
+def maximum_a_posteriori_deterministic(model_parameters, history):
     p = sigmoid(model_parameters, history)
     return AGENT_CHOICES[0] if p >= 0.5 else AGENT_CHOICES[1]
