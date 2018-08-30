@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,beckie,agent_choices_beckie_0002.csv,config/experiment3.json,20180830_12:07:54,Desktop,2,feedback_v2,model_params_beckie_0002.csv

@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,adrien,agent_choices_adrien_0002.csv,config/experiment4.json,20180830_11:53:03,Desktop,2,feedback_v2,model_params_adrien_0002.csv

@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,adriencoin,agent_choices_adriencoin_0001.csv,config/experiment4.json,20180830_12:50:12,Desktop,1,feedback_v2,model_params_adriencoin_0001.csv

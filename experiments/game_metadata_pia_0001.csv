@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,pia,agent_choices_pia_0001.csv,config/experiment4.json,20180830_12:00:48,Desktop,1,feedback_v2,model_params_pia_0001.csv

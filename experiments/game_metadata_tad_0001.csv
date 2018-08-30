@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,tad,agent_choices_tad_0001.csv,config/experiment4.json,20180830_12:10:58,Desktop,1,feedback_v2,model_params_tad_0001.csv

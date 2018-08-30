@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,spiros,agent_choices_spiros_0001.csv,config/experiment3.json,20180830_12:38:50,Desktop,1,feedback_v2,model_params_spiros_0001.csv

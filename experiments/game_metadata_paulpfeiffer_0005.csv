@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,paulpfeiffer,agent_choices_paulpfeiffer_0005.csv,config/experiment4.json,20180830_11:11:43,Desktop,5,feedback_v2,model_params_paulpfeiffer_0005.csv

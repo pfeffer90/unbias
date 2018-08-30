@@ -1,0 +1,2 @@
+,AgentName,ChoicesFile,ConfigFile,Date,DeviceType,GameIdx,GameVariant,ModelFile
+0,teresa,agent_choices_teresa_0001.csv,config/experiment4.json,20180830_12:10:11,Desktop,1,feedback_v2,model_params_teresa_0001.csv
