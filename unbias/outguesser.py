@@ -48,48 +48,36 @@ def separate_choices_sequences_into_history_and_choice(choice_history, history_l
     number_of_data_points = choice_history.shape[0] - history_length
     choice_histories = np.zeros((history_length, number_of_data_points))
     for i in range(0, history_length):
-        choice_histories[i, :] = choice_history[history_length-i-1 : choice_history.shape[0]-i-1]  
+        choice_histories[i, :] = choice_history[history_length - i - 1: choice_history.shape[0] - i - 1]
     choice_outcomes = choice_history[history_length:]
     return choice_histories, choice_outcomes
 
 
 def linear_choice_history_dependent_model(history_weights, choice_history):
-    history_length = len(history_weights)-1
+    history_length = len(history_weights) - 1
     if choice_history.shape[0] <= history_length:
         return history_weights
     else:
-        in_data, out_data = separate_choices_sequences_into_history_and_choice(choice_history[:,0], history_length)
+        in_data, out_data = separate_choices_sequences_into_history_and_choice(choice_history[:, 0], history_length)
         ones_row = np.ones((1, choice_history.shape[0] - history_length))
         in_data = np.concatenate((ones_row, in_data), axis=0)
         return momentum_gradient_descent(history_weights, in_data, out_data)
 
+
 def choice_history_reward_history_model(history_weights, choice_history):
-    history_length = int((len(history_weights)-1)/2)
+    history_length = int((len(history_weights) - 1) / 2)
     if choice_history.shape[0] <= history_length:
         return history_weights
     else:
-        reward_history = -1*np.multiply(choice_history[:,0],choice_history[:,1])
-        reward_choice_history = np.multiply(choice_history[:,0],reward_history)
-        in_choice_data, out_choice_data = separate_choices_sequences_into_history_and_choice(choice_history[:,0], history_length)
-        in_reward_choice_data, out_reward_data = separate_choices_sequences_into_history_and_choice(reward_choice_history, history_length)
+        reward_history = -1 * np.multiply(choice_history[:, 0], choice_history[:, 1])
+        reward_choice_history = np.multiply(choice_history[:, 0], reward_history)
+        in_choice_data, out_choice_data = separate_choices_sequences_into_history_and_choice(choice_history[:, 0],
+                                                                                             history_length)
+        in_reward_choice_data, out_reward_data = separate_choices_sequences_into_history_and_choice(
+            reward_choice_history, history_length)
         ones_row = np.ones((1, choice_history.shape[0] - history_length))
         in_data = np.concatenate((ones_row, in_choice_data), axis=0)
         in_data = np.concatenate((in_data, in_reward_choice_data), axis=0)
-        return simple_gradient_descent(history_weights, in_data, out_choice_data)
-    
-
-def choice_history_reward_history_model(history_weights, choice_history):
-    history_length = int((len(history_weights)-1)/2)
-    if choice_history.shape[0] <= history_length:
-        return history_weights
-    else:
-        reward_history = 2*np.logical_xor(choice_history[:,0],choice_history[:,1]) - 1
-        reward_choice_history = np.multiply(choice_history[:,0],reward_history)
-        in_choice_data, out_choice_data = separate_choices_sequences_into_history_and_choice(choice_history[:,0], history_length)
-        in_reward_choice_data, out_reward_data = separate_choices_sequences_into_history_and_choice(reward_choice_history, history_length)
-        #ones_row = np.ones((1, choice_history.shape[0] - history_length))
-        #in_data = np.concatenate((ones_row, in_choice_data), axis=0) #this already happen in separate_choices_sequences_into...
-        in_data = np.concatenate((in_choice_data, in_reward_choice_data), axis=0)
         return momentum_gradient_descent(history_weights, in_data, out_choice_data)
 
 
@@ -145,22 +133,25 @@ def momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_mi
 
     return w
 
+
 def linear_choice_history_dependent_model_predictor(model_parameters, choice_history):
-    history_data = np.concatenate(([1],np.flip(choice_history[1-len(model_parameters):,0])))
+    history_data = np.concatenate(([1], np.flip(choice_history[1 - len(model_parameters):, 0])))
     return maximum_a_posteriori(model_parameters, history_data)
 
 
 def choice_history_reward_history_model_predictor(model_parameters, choice_history):
-    history_length = int((len(model_parameters) - 1)/2)
-    agent_choice_data = np.flip(choice_history[-history_length:,0])
-    outguesser_choice_data = np.flip(choice_history[-history_length:,1])
-    reward_data = -1*np.multiply(agent_choice_data, outguesser_choice_data)
+    history_length = int((len(model_parameters) - 1) / 2)
+    agent_choice_data = np.flip(choice_history[-history_length:, 0])
+    outguesser_choice_data = np.flip(choice_history[-history_length:, 1])
+    reward_data = -1 * np.multiply(agent_choice_data, outguesser_choice_data)
     reward_choice_data = np.multiply(agent_choice_data, reward_data)
-    history_data = np.concatenate(([1],agent_choice_data))
-    history_data = np.concatenate((history_data,reward_choice_data))
+    history_data = np.concatenate(([1], agent_choice_data))
+    history_data = np.concatenate((history_data, reward_choice_data))
     return maximum_a_posteriori(model_parameters, history_data)
 
-def regularized_momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_min=1e-3, steps=1000, learning_rate=0.1, lamb=0.1):
+
+def regularized_momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_min=1e-3, steps=1000,
+                                          learning_rate=0.1, lamb=0.1):
     """
 
     :param initial_weighting_vector: a vector of the form [b, w] where b is the bias and w is history weighing
@@ -181,7 +172,7 @@ def regularized_momentum_gradient_descent(initial_weighting_vector, in_data, out
     gamma = 0.5
     v = np.zeros((len(initial_weighting_vector),))
     for i in range(1, steps + 1):
-        dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre))) + lamb*w
+        dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre))) + lamb * w
         v = gamma * v + learning_rate * dw
         w += v
 
@@ -194,22 +185,6 @@ def regularized_momentum_gradient_descent(initial_weighting_vector, in_data, out
     return w
 
 
-def linear_choice_history_dependent_model_predictor(model_parameters, choice_history):
-    history_data = np.concatenate(([1],np.flip(choice_history[1-len(model_parameters):,0])))
-    return maximum_a_posteriori(model_parameters, history_data)
-
-
-def choice_history_reward_history_model_predictor(model_parameters, choice_history):
-    history_length = int((len(model_parameters) - 1)/2)
-    agent_choice_data = np.flip(choice_history[-history_length:,0])
-    outguesser_choice_data = np.flip(choice_history[-history_length:,1])
-    reward_data = -1*np.multiply(agent_choice_data, outguesser_choice_data)
-    reward_choice_data = np.multiply(agent_choice_data, reward_data)
-    history_data = np.concatenate(([1],agent_choice_data))
-    history_data = np.concatenate((history_data,reward_choice_data))
-    return maximum_a_posteriori(model_parameters, history_data)
-
-
 def maximum_a_posteriori(model_parameters, history):
     p = sigmoid(model_parameters, history)
-    return AGENT_CHOICES[0] if p>=0.5 else AGENT_CHOICES[1]
+    return AGENT_CHOICES[0] if p >= 0.5 else AGENT_CHOICES[1]
