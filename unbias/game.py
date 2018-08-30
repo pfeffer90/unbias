@@ -69,7 +69,6 @@ def experiment(config_file):
     with open(config_file) as fp:
         config = json.load(fp)
     config.update({'config_file': config_file})
-    print(config)
     config_experiment(**config)
 
 

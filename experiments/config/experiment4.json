@@ -4,6 +4,6 @@
   "history_dependence": 1,
   "record": true,
   "data_dir": "../experiments",
-  "update_model": "choice_and_reward_history",
-  "predictor": "choice_reward_predictor"
+  "update_model": "choice_history",
+  "predictor": "choice_predictor"
 }

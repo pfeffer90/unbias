@@ -6,10 +6,7 @@ from training_data import sigmoid, AGENT_CHOICES
 
 class Outguesser:
     def predict_next_choice(self, history):
-        if history.shape[0] <= len(self.model_parameters) - 1:
-            prediction = np.random.choice(AGENT_CHOICES, 1)[0]
-        else:
-            prediction = self.predict(self.model_parameters, history)
+        prediction = self.predict(self.model_parameters, history)
         return prediction
 
     def update_model(self, data):
@@ -135,19 +132,28 @@ def momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_mi
 
 
 def linear_choice_history_dependent_model_predictor(model_parameters, choice_history):
-    history_data = np.concatenate(([1], np.flip(choice_history[1 - len(model_parameters):, 0], 0)))
-    return maximum_a_posteriori(model_parameters, history_data)
+    history_length = (len(model_parameters) - 1)
+    if choice_history.shape[0] <= history_length:
+        prediction = np.random.choice(AGENT_CHOICES, 1)[0]
+    else:
+        history_data = np.concatenate(([1], np.flip(choice_history[1 - len(model_parameters):, 0], 0)))
+        prediction = maximum_a_posteriori(model_parameters, history_data)
+    return prediction
 
 
 def choice_history_reward_history_model_predictor(model_parameters, choice_history):
     history_length = int((len(model_parameters) - 1) / 2)
-    agent_choice_data = np.flip(choice_history[-history_length:, 0], 0)
-    outguesser_choice_data = np.flip(choice_history[-history_length:, 1], 0)
-    reward_data = -1 * np.multiply(agent_choice_data, outguesser_choice_data)
-    reward_choice_data = np.multiply(agent_choice_data, reward_data)
-    history_data = np.concatenate(([1], agent_choice_data))
-    history_data = np.concatenate((history_data, reward_choice_data))
-    return maximum_a_posteriori(model_parameters, history_data)
+    if choice_history.shape[0] <= history_length:
+        prediction = np.random.choice(AGENT_CHOICES, 1)[0]
+    else:
+        agent_choice_data = np.flip(choice_history[-history_length:, 0], 0)
+        outguesser_choice_data = np.flip(choice_history[-history_length:, 1], 0)
+        reward_data = -1 * np.multiply(agent_choice_data, outguesser_choice_data)
+        reward_choice_data = np.multiply(agent_choice_data, reward_data)
+        history_data = np.concatenate(([1], agent_choice_data))
+        history_data = np.concatenate((history_data, reward_choice_data))
+        prediction = maximum_a_posteriori(model_parameters, history_data)
+    return prediction
 
 
 def regularized_momentum_gradient_descent(initial_weighting_vector, in_data, out_data, dw_min=1e-3, steps=1000,
