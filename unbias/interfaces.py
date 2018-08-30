@@ -1,6 +1,7 @@
+import time
+
 import ipywidgets as widgets
 import numpy as np
-import time
 from IPython.display import display
 
 
@@ -53,10 +54,10 @@ def calculate_outguesser_score(game):
     return game.number_of_trials - calculate_agent_score(game)
 
 
-def get_score_widget(game):
+def get_score_widget(game, agent_name, outguess_name):
     score_widget = widgets.Label(
-        "Your final score: {}   My final score: {}".format(calculate_agent_score(game),
-                                                           calculate_outguesser_score(game)))
+        "{} final score: {}   {} final score: {}".format(agent_name, calculate_agent_score(game), outguess_name,
+                                                         calculate_outguesser_score(game)))
     return score_widget
 
 
@@ -83,6 +84,7 @@ def get_choice_value_from_click(button_description):
         return -1
     else:
         return 1
+
 
 def get_description_from_choice(choice):
     if choice == -1:
@@ -128,6 +130,10 @@ def no_feedback_v2(g, max_trials, finish_game):
     data_collector = {}
 
 
+def get_final_score_message(g):
+    widgets.Label()
+
+
 def feedback_v2(g, max_trials, finish_game):
     def get_agent_choice(button):
         outguesser_choice = g.get_outguesser_response()
@@ -139,12 +145,12 @@ def feedback_v2(g, max_trials, finish_game):
             print("{:s}   The Oraculo".format(data_collector["name"]))
             print("%d - %d" % (calculate_agent_score(g), calculate_outguesser_score(g)))
             if agent_choice == outguesser_choice:
-                button.button_style='danger'
+                button.button_style = 'danger'
                 msg = "(You lost!)"
             else:
-                button.button_style='success'
+                button.button_style = 'success'
                 msg = "(You won!)"
-            #print("{:s} - {:s}   {:s}".format(get_description_from_choice(agent_choice), get_description_from_choice(outguesser_choice), msg))
+                # print("{:s} - {:s}   {:s}".format(get_description_from_choice(agent_choice), get_description_from_choice(outguesser_choice), msg))
 
         time.sleep(0.3)
         button.button_style = ''
@@ -153,7 +159,7 @@ def feedback_v2(g, max_trials, finish_game):
         if g.number_of_trials == max_trials:
             game_area.close()
             display(get_thank_you_message())
-            # display(get_final_score_message())
+            display(get_score_widget(g, data_collector["name"], "Oraculo"))
             finish_game(**data_collector)
 
     def react_to_mobile_vs_desktop_info(button):
