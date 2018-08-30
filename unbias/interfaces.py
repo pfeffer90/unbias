@@ -9,7 +9,7 @@ def feedback_v1(g, max_trials):
 
     def on_button_clicked(b):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = 2 * int(b.description) - 1
+        agent_choice = get_choice_value_from_click(b.description)
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
@@ -68,7 +68,7 @@ def get_progress_bar(max_trials):
                                orientation='horizontal')
 
 
-def get_buttons(on_button_clicked, descriptions=['0', '1']):
+def get_buttons(on_button_clicked, descriptions=['Heads', 'Tails']):
     button0 = widgets.Button(description=descriptions[0])
     button1 = widgets.Button(description=descriptions[1])
     button0.on_click(on_button_clicked)
@@ -77,10 +77,17 @@ def get_buttons(on_button_clicked, descriptions=['0', '1']):
     return buttons
 
 
+def get_choice_value_from_click(button_description):
+    if button_description == 'Heads':
+        return -1
+    else:
+        return 1
+
+
 def no_feedback_v2(g, max_trials, finish_game):
     def get_agent_choice(button):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = 2 * int(button.description) - 1
+        agent_choice = get_choice_value_from_click(button.description)
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
@@ -117,7 +124,7 @@ def no_feedback_v2(g, max_trials, finish_game):
 def feedback_v2(g, max_trials, finish_game):
     def get_agent_choice(button):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = 2 * int(button.description) - 1
+        agent_choice = get_choice_value_from_click(button.description)
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
@@ -164,7 +171,7 @@ def feedback_v2(g, max_trials, finish_game):
 def no_feedback_v1(g, max_trials, finish_game):
     def get_agent_choice(button):
         outguesser_choice = g.get_outguesser_response()
-        agent_choice = 2 * int(button.description) - 1
+        agent_choice = get_choice_value_from_click(button.description)
         g.add_trial(agent_choice, outguesser_choice)
         progress_bar.value += 1
 
