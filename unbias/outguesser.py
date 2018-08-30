@@ -55,7 +55,7 @@ def linear_choice_history_dependent_model(history_weights, choice_history):
     if choice_history.shape[0] <= history_length:
         return history_weights
     else:
-        in_data, out_data = separate_choices_sequences_into_history_and_choice(choice_history[:, 0], history_length)
+        in_data, out_data = separate_choices_sequences_into_history_and_choice(choice_history[:,0], history_length)
         ones_row = np.ones((1, choice_history.shape[0] - history_length))
         in_data = np.concatenate((ones_row, in_data), axis=0)
         return momentum_gradient_descent(history_weights, in_data, out_data)
@@ -178,7 +178,11 @@ def regularized_momentum_gradient_descent(initial_weighting_vector, in_data, out
     gamma = 0.5
     v = np.zeros((len(initial_weighting_vector),))
     for i in range(1, steps + 1):
-        dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre))) + lamb * w
+
+        regul = lamb*np.sign(w)
+        regul[0] = 0
+
+        dw = np.dot(x_pre, ((x_target + 1) / 2 - sigmoid(w, x_pre))) + regul
         v = gamma * v + learning_rate * dw
         w += v
 
